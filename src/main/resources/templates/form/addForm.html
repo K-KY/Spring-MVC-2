@@ -28,14 +28,35 @@
         </div>
         <div>
             <label for="price">가격</label>
-            <input type="text" id="price" name="price" th:field="*{itemName}" class="form-control" placeholder="가격을 입력하세요">
+            <input type="text" id="price" name="price" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요">
         </div>
         <div>
             <label for="quantity">수량</label>
-            <input type="text" id="quantity" name="quantity" th:field="*{itemName}" class="form-control" placeholder="수량을 입력하세요">
+            <input type="text" id="quantity" name="quantity" th:field="*{quantity}" class="form-control" placeholder="수량을 입력하세요">
         </div>
 
         <hr class="my-4">
+
+        <div>판매 여부</div>
+        <div>
+            <div class="form-check">
+                <!--th:field 를 사용하면 히든 필드를 자동으로 생성한다.-->
+                <input type="checkbox" id="open" th:field="*{open}" class="form-check-input">
+
+                <!--체크박스를 체크하면 form에서 open=on 이라는 값이 넘어가고 스프링에서 on은 true로 변환한다.
+                여기서 선택 변수식을 사용 할 수 있는것은 form에 object로 item이 선택 되어있기 때문-->
+<!--
+                <input type="hidden" name="_open" value="on">
+-->
+                <!--이렇게 히든 필드를 만들어서 전송하면 on이면 true null 이면 false가 된다.-->
+                <!--체크박스가 체크 되어있으면 서버로는 true 체크가 안되어 있으면 null(아예 전송되지 않음)-->
+                <!--사용자가 의도적으로 체크되어 있던 값을 체크를 해제해도 저장시 아무 값도 넘어가지 않기 때문에,
+                 서버 구현에 따라서 값이 오지 않은 것으로 판단해서 값을 변경하지 않을 수도 있다.-->
+                <!--ex) "광고수신 동의"가 기본으로 체크 되어있을 때 사용자가 체크를 해제 하면 아무 값도 전송되지 않기 때문에 변경이 되지 않는다. "구현에 따라서" -->
+                <!--서버 내부에서 원래 값을 저장해 놓고 비교후 null 이거나 원래 값과 다를 때 변경하면 괜찮을듯-->
+                <label for="open" class="form-check-label">판매 오픈</label>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col">
@@ -46,6 +67,19 @@
                         onclick="location.href='items.html'"
                         th:onclick="|location.href='@{/form/items}'|"
                         type="button">취소</button>
+            </div>
+        </div>
+
+        <div>
+            <div>등록 지역</div>
+            <!--타임리프는 each로 반복해서 만들 때 임의로 id뒤에 1, 2 ,3 숫자를 뒤에 붙인다-->
+            <div th:each="region : ${regions}" class="form-check form-check-inline"><!--여기에서 가져오는 regions는 컨트롤러의 regions메서드에서 생성한거-->
+                <input type="checkbox" th:field="${item.regions}" th:value="${region.key}"
+                       class="form-check-input"><!--여기 regions는 모델에 직접 넣은 item의 regions (List<String)-->
+                <label th:for="${#ids.prev('regions')}"
+                       th:text="${region.value}" class="form-check-label">\</label><!--"${#ids.prev('regions')}" = th:field가 생성하는 id값을 부여-->
+                <!--타임리프는 each 문안에서 생성되는 요소의 id를 임의로 name + 1, name + 2 로 숫자를 붙여 생성한다-->
+                <!--${#ids.prev('regions')} = 타임리프에서 동적으로 생성되는 id를 부여한디-->
             </div>
         </div>
 
