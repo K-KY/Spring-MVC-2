@@ -33,7 +33,7 @@ public class FormItemController {
     }
     //이렇게 하면 이 컨트롤러를 요청 할 때 여기 있는 내용이 model에 자동으로 담아진다.
 
-    @ModelAttribute("itemType")
+    @ModelAttribute("itemTypes")
     public ItemType[] itemTypes() {
         return ItemType.values();
     }

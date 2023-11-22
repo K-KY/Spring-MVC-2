@@ -79,6 +79,16 @@
         </div>
     </div>
 
+    <!-- radio button -->
+    <div>상품 종류</div>
+    <div>
+        <div th:each="type : ${itemTypes}">
+            <input type="radio" th:field="${item.itemType}" th:value="${type.name()}" disabled>
+            <label th:for="${#ids.prev('itemType')}" th:text="${type.description}">\</label>
+        </div>
+    </div>
+
+
 </div> <!-- /container -->
 </body>
 </html>
